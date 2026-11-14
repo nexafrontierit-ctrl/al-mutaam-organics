@@ -1,0 +1,17 @@
+[
+  {
+    "id": "1794650608231",
+    "orderId": "AMO-6079",
+    "customerName": "Muhammad Hassan Raza ",
+    "phone": "03142215392",
+    "area": "Wah Cantt",
+    "address": "near dera raja riaz",
+    "quantity": 1,
+    "deliveryFee": 100,
+    "totalAmount": 1500,
+    "paymentMethod": "Cash on Delivery (COD)",
+    "screenshot": "",
+    "status": "Pending",
+    "createdAt": "11/14/2026, 2:03:28 AM"
+  }
+]
