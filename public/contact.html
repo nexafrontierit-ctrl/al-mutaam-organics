@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Track Your Order & Contact Us | Al Mutaam Organics</title>
+  <meta name="description" content="Track your Al Mutaam Organics Talbina order online or contact us on WhatsApp at 0310-5838160 for delivery in Hassan Abdal, Wah Cantt, and Taxila.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo-box">
+      <img src="images/logo.png" alt="Al Mutaam Organics Logo">
+      <span>Al Mutaam Organics</span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="product.html">Order Talbina</a>
+      <a href="benefits.html">Health Benefits</a>
+      <a href="about.html">Our Purity</a>
+      <a href="contact.html" class="active">Track & Contact</a>
+      <a href="product.html" class="btn-primary">Order Now</a>
+    </nav>
+  </header>
+
+  <section class="container">
+    <div class="section-title">
+      <h2>Apna Order Track Karein ya Rabta Karein</h2>
+      <p>Order book karne ke baad jo Tracking ID (jaise AMO-1234) mili thi, woh neeche likh kar apne parcel ka status check karein.</p>
+    </div>
+
+    <div class="grid-3">
+      <div class="card">
+        <h3>Live Order Tracking</h3>
+        <p style="margin-bottom: 15px;">Apna Order ID darj karein:</p>
+        <div class="form-group">
+          <input type="text" id="trackInput" placeholder="Maslan: AMO-4521">
+        </div>
+        <button onclick="trackOrder()" class="btn-gold" style="width: 100%;">Status Check Karein</button>
+
+        <div id="trackResult" style="display: none; margin-top: 20px; padding: 15px; background: var(--bg-cream); border-radius: 10px; border: 1px solid var(--border-color);"></div>
+      </div>
+
+      <div class="card">
+        <h3>Direct WhatsApp & Payment Info</h3>
+        <p style="margin-bottom: 12px;">Kisi bhi sawal ya bulk order ke liye hamein WhatsApp karein:</p>
+        <p><strong>WhatsApp / Call:</strong> 0310-5838160</p>
+        <p><strong>EasyPaisa / NayaPay:</strong> 0310-5838160</p>
+        <p style="margin: 12px 0;"><strong>Delivery Charges:</strong><br>
+        • Hassan Abdal & Qareeb: Free<br>
+        • Wah Cantt: Rs. 100<br>
+        • Taxila & Ird-Gird: Rs. 150</p>
+        <a href="https://wa.me." target="_blank" class="btn-primary" style="width: 100%; text-align: center;">WhatsApp Par Message Karein</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-bottom">
+      &copy; 2026 Al Mutaam Organics | <a href="admin.html" style="display:inline; color:#D49B2A;">Admin Login</a>
+    </div>
+  </footer>
+
+  <script>
+    async function trackOrder() {
+      const id = document.getElementById('trackInput').value.trim();
+      const resultBox = document.getElementById('trackResult');
+      if (!id) return alert('Pehle apna Order ID likhein.');
+
+      const res = await fetch('/api/orders/track/' + id);
+      const data = await res.json();
+      resultBox.style.display = 'block';
+
+      if (data.success) {
+        resultBox.innerHTML = `
+          <p><strong>Customer:</strong> ${data.order.customerName}</p>
+          <p><strong>Area:</strong> ${data.order.area}</p>
+          <p><strong>Quantity:</strong> ${data.order.quantity} Pack(s)</p>
+          <p><strong>Total Bill:</strong> Rs. ${data.order.totalAmount}</p>
+          <p style="margin-top:8px;"><strong>Current Status:</strong> <span class="badge">${data.order.status}</span></p>
+        `;
+      } else {
+        resultBox.innerHTML = `<p style="color: red;">Yeh Order ID nahi mila. Dobara check karein.</p>`;
+      }
+    }
+  </script>
+
+</body>
+</html>

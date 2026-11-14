@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Dry Fruit Talbina (250g) | Al Mutaam Organics</title>
+  <meta name="description" content="Order 100% Pure Homemade Dry Fruit Talbina Powder (250g - Rs. 1,400). COD, EasyPaisa & NayaPay available in Hassan Abdal, Wah Cantt & Taxila.">
+  <meta name="keywords" content="Order Talbina Online, Dry Fruit Talbina Price Pakistan, Talbina COD Wah Cantt, Talbina Hassan Abdal, Talbina Taxila, Al Mutaam Organics Shop">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo-box">
+      <img src="images/logo.png" alt="Al Mutaam Organics Logo">
+      <span>Al Mutaam Organics</span>
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="product.html" class="active">Order Talbina</a>
+      <a href="benefits.html">Health Benefits</a>
+      <a href="about.html">Our Purity</a>
+      <a href="contact.html">Track & Contact</a>
+    </nav>
+  </header>
+
+  <section class="container">
+    <div class="hero" style="padding: 10px 0;">
+      <div class="hero-img">
+        <img src="images/product.png" alt="Al Mutaam Organics Dry Fruit Talbina 250g">
+      </div>
+      <div class="card">
+        <span class="badge">250g Airtight Kraft Pouch</span>
+        <h2>Premium Homemade Dry Fruit Talbina</h2>
+        <p style="font-size: 1.6rem; font-weight: 700; color: var(--forest-green); margin: 10px 0;">Rs. 1,400 <span style="font-size: 0.95rem; font-weight: 400; color: var(--text-muted);">/ per pack</span></p>
+        <p style="margin-bottom: 15px;">100% khalis Jau, Khajoor, Badam, Kaju, Pista, Makhana aur Pumpkin Seeds. Har umar ke afraad ke liye mukammal qudrati ghiza.</p>
+
+        <form id="orderForm">
+          <div class="form-group">
+            <label>Poora Naam (Full Name) *</label>
+            <input type="text" id="customerName" required placeholder="Apna naam likhein">
+          </div>
+
+          <div class="form-group">
+            <label>Mobile / WhatsApp Number *</label>
+            <input type="tel" id="phone" required placeholder="03XX-XXXXXXX">
+          </div>
+
+          <div class="form-group">
+            <label>Delivery Area Select Karein *</label>
+            <select id="area" onchange="calculateTotal()" required>
+              <option value="Hassan Abdal & Qareebi Ilaqay" data-fee="0">Hassan Abdal & Qareebi Ilaqay (Free Delivery)</option>
+              <option value="Wah Cantt" data-fee="100">Wah Cantt (+ Rs. 100 Delivery)</option>
+              <option value="Taxila & Ird-Gird" data-fee="150">Taxila & Ird-Gird (+ Rs. 150 Delivery)</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label>Mukammal Ghar ka Pata (Complete Address) *</label>
+            <textarea id="address" rows="2" required placeholder="Ghar number, gali, mohalla / sector likhein"></textarea>
+          </div>
+
+          <div class="form-group">
+            <label>Quantity (Packs ki Tadaad)</label>
+            <input type="number" id="quantity" value="1" min="1" max="20" onchange="calculateTotal()" oninput="calculateTotal()">
+          </div>
+
+          <div class="form-group">
+            <label>Payment Method *</label>
+            <select id="paymentMethod" onchange="togglePaymentBox()">
+              <option value="Cash on Delivery (COD)">Cash on Delivery (COD)</option>
+              <option value="EasyPaisa">EasyPaisa (0310-5838160)</option>
+              <option value="NayaPay">NayaPay (0310-5838160)</option>
+            </select>
+          </div>
+
+          <div id="onlinePayBox" style="display: none; background: #E8F2EC; padding: 15px; border-radius: 10px; margin-bottom: 18px; border: 1px dashed var(--forest-green);">
+            <p style="font-weight: 600; color: var(--forest-green);">Online Payment Details:</p>
+            <p style="font-size: 0.92rem;">Account Number: <strong>0310-5838160</strong> (EasyPaisa / NayaPay)</p>
+            <p style="font-size: 0.85rem; margin-bottom: 10px;">Payment bhejne ke baad neeche screenshot upload karein:</p>
+            <input type="file" id="screenshot" accept="image/*">
+          </div>
+
+          <div style="background: var(--bg-cream); padding: 15px; border-radius: 10px; margin-bottom: 18px;">
+            <p>Product Price: <strong id="subTotalText">Rs. 1,400</strong></p>
+            <p>Delivery Charges: <strong id="deliveryText">Rs. 0 (Free)</strong></p>
+            <hr style="margin: 8px 0; border-color: var(--border-color);">
+            <p style="font-size: 1.2rem; color: var(--forest-green);">Total Bill: <strong id="totalText">Rs. 1,400</strong></p>
+          </div>
+
+          <button type="submit" class="btn-gold" style="width: 100%; font-size: 1.05rem;">Confirm Order</button>
+        </form>
+
+        <div id="orderSuccess" style="display: none; margin-top: 20px; padding: 18px; background: #E8F2EC; border-radius: 10px; text-align: center;">
+          <h3 style="color: var(--forest-green);">Order Book Ho Gaya!</h3>
+          <p>Aapka Order Tracking ID: <strong id="generatedOrderId" style="font-size: 1.2rem;"></strong></p>
+          <p style="font-size: 0.9rem; margin-top: 6px;">Is ID ko save kar lein. Hum jald WhatsApp par rabta karenge!</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-bottom">
+      &copy; 2026 Al Mutaam Organics | WhatsApp: 0310-5838160
+    </div>
+  </footer>
+
+  <script>
+    function calculateTotal() {
+      const qty = parseInt(document.getElementById('quantity').value) || 1;
+      const areaSelect = document.getElementById('area');
+      const fee = parseInt(areaSelect.options[areaSelect.selectedIndex].getAttribute('data-fee'));
+      const subTotal = qty * 1400;
+      const total = subTotal + fee;
+
+      document.getElementById('subTotalText').innerText = 'Rs. ' + subTotal.toLocaleString();
+      document.getElementById('deliveryText').innerText = fee === 0 ? 'Rs. 0 (Free)' : 'Rs. ' + fee;
+      document.getElementById('totalText').innerText = 'Rs. ' + total.toLocaleString();
+      return { qty, fee, total };
+    }
+
+    function togglePaymentBox() {
+      const method = document.getElementById('paymentMethod').value;
+      const box = document.getElementById('onlinePayBox');
+      const fileInput = document.getElementById('screenshot');
+      if (method === 'EasyPaisa' || method === 'NayaPay') {
+        box.style.display = 'block';
+        fileInput.required = true;
+      } else {
+        box.style.display = 'none';
+        fileInput.required = false;
+      }
+    }
+
+    document.getElementById('orderForm').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const { qty, fee, total } = calculateTotal();
+      const formData = new FormData();
+      formData.append('customerName', document.getElementById('customerName').value);
+      formData.append('phone', document.getElementById('phone').value);
+      formData.append('area', document.getElementById('area').value);
+      formData.append('address', document.getElementById('address').value);
+      formData.append('quantity', qty);
+      formData.append('deliveryFee', fee);
+      formData.append('totalAmount', total);
+      formData.append('paymentMethod', document.getElementById('paymentMethod').value);
+
+      const fileInput = document.getElementById('screenshot');
+      if (fileInput.files[0]) {
+        formData.append('screenshot', fileInput.files[0]);
+      }
+
+      const res = await fetch('/api/orders', { method: 'POST', body: formData });
+      const data = await res.json();
+      if (data.success) {
+        document.getElementById('orderForm').style.display = 'none';
+        document.getElementById('generatedOrderId').innerText = data.orderId;
+        document.getElementById('orderSuccess').style.display = 'block';
+      } else {
+        alert('Order bhejne mein masla aaya, dobara koshish karein.');
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Al Mutaam Organics</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <a href="index.html" class="logo-box">
+      <img src="images/logo.png" alt="Al Mutaam Organics Logo">
+      <span>Al Mutaam Admin</span>
+    </a>
+    <nav>
+      <a href="index.html">View Live Website</a>
+    </nav>
+  </header>
+
+  <section class="container">
+    <div id="loginBox" class="card" style="max-width: 400px; margin: 40px auto; text-align: center;">
+      <h2>Admin Login</h2>
+      <p style="margin-bottom: 15px;">Orders dekhne ke liye password darj karein:</p>
+      <div class="form-group">
+        <input type="password" id="adminPass" placeholder="Password likhein">
+      </div>
+      <button onclick="loadOrders()" class="btn-primary" style="width: 100%;">Login</button>
+    </div>
+
+    <div id="dashboardBox" style="display: none;">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+        <h2>Live Orders Dashboard</h2>
+        <button onclick="loadOrders()" class="btn-gold">Refresh Orders</button>
+      </div>
+      <div id="ordersList" class="grid-3"></div>
+    </div>
+  </section>
+
+  <script>
+    let savedPassword = '';
+
+    async function loadOrders() {
+      const passInput = document.getElementById('adminPass').value;
+      if (passInput) savedPassword = passInput;
+
+      const res = await fetch('/api/admin/orders', {
+        headers: { 'x-admin-password': savedPassword }
+      });
+      const data = await res.json();
+
+      if (!data.success) {
+        return alert('Ghalat Password! Dobara koshish karein.');
+      }
+
+      document.getElementById('loginBox').style.display = 'none';
+      document.getElementById('dashboardBox').style.display = 'block';
+
+      const list = document.getElementById('ordersList');
+      if (data.orders.length === 0) {
+        list.innerHTML = '<p>Abhi tak koi order nahi aaya.</p>';
+        return;
+      }
+
+      list.innerHTML = data.orders.map(o => `
+        <div class="card">
+          <span class="badge">${o.orderId} • ${o.status}</span>
+          <h3 style="margin-top: 8px;">${o.customerName}</h3>
+          <p><strong>Phone:</strong> <a href="https://wa.me{o.phone.replace(/^0/, '')}" target="_blank" style="color: var(--forest-green);">${o.phone} (WhatsApp)</a></p>
+          <p><strong>Area:</strong> ${o.area}</p>
+          <p><strong>Address:</strong> ${o.address}</p>
+          <p><strong>Qty:</strong> ${o.quantity} Pack(s) | <strong>Total:</strong> Rs. ${o.totalAmount}</p>
+          <p><strong>Payment:</strong> ${o.paymentMethod}</p>
+          ${o.screenshot ? `<p style="margin-top:8px;"><a href="${o.screenshot}" target="_blank" class="btn-gold" style="padding: 5px 12px; font-size: 0.85rem;">Payment Screenshot Dekhein</a></p>` : ''}
+          <hr style="margin: 12px 0; border-color: var(--border-color);">
+          <label style="font-size: 0.85rem; font-weight: 600;">Status Badlein:</label>
+          <select onchange="updateStatus('${o.id}', this.value)" style="width: 100%; padding: 8px; margin-top: 5px; border-radius: 6px;">
+            <option value="Pending" ${o.status === 'Pending' ? 'selected' : ''}>Pending</option>
+            <option value="Confirmed" ${o.status === 'Confirmed' ? 'selected' : ''}>Confirmed</option>
+            <option value="Out for Delivery" ${o.status === 'Out for Delivery' ? 'selected' : ''}>Out for Delivery</option>
+            <option value="Delivered" ${o.status === 'Delivered' ? 'selected' : ''}>Delivered</option>
+          </select>
+          <p style="font-size: 0.78rem; color: var(--text-muted); margin-top: 8px;">${o.createdAt}</p>
+        </div>
+      `).join('');
+    }
+
+    async function updateStatus(id, status) {
+      await fetch('/api/admin/orders/' + id, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-admin-password': savedPassword
+        },
+        body: JSON.stringify({ status })
+      });
+      loadOrders();
+    }
+  </script>
+
+</body>
+</html>
